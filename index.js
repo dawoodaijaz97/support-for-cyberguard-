@@ -2,36 +2,38 @@ const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
 
-const {Policy} = require('./models/Policy');
-const {Rule} = require("./models/Rules");
-const {DataIdentifier} = require("./models/DataIdentifier");
-const {File} = require("./models/File");
-const {Alert} = require("./models/Alert");
-const {DCMAlertWeb} = require("./models/DCMAlertWeb");
-const {DCMAlertEndpoint} = require("./models/DCMAlertEndpoint");
-const {RequestDetails} = require("./models/requestDetails");
-const {WebScan} = require("./models/WebScan");
-const {IDMAlertWeb} = require("./models/IDMAlertWeb");
-const {Endpoint} = require("./models/Endpoint");
-const {DCMIdentifierRule} = require("./models/DCMDataIdentifierRule");
-const {EndpointRestScan} = require("./models/EndpointRestScan");
-const {DCMAlertEndpointRest} = require("./models/DCMAlertEndpointRest");
-const {DCMRegexRule} = require("./models/DCMRegexRule");
-const {IDMRule} = require("./models/IDMRule");
-const {InterceptFile} = require("./models/InterceptFile");
+const { Policy } = require('./models/Policy');
+const { Rule } = require("./models/Rules");
+const { DataIdentifier } = require("./models/DataIdentifier");
+const { File } = require("./models/File");
+const { Alert } = require("./models/Alert");
+const { DCMAlertWeb } = require("./models/DCMAlertWeb");
+const { DCMAlertEndpoint } = require("./models/DCMAlertEndpoint");
+const { RequestDetails } = require("./models/requestDetails");
+const { WebScan } = require("./models/WebScan");
+const { IDMAlertWeb } = require("./models/IDMAlertWeb");
+const { Endpoint } = require("./models/Endpoint");
+const { DCMIdentifierRule } = require("./models/DCMDataIdentifierRule");
+const { EndpointRestScan } = require("./models/EndpointRestScan");
+const { DCMAlertEndpointRest } = require("./models/DCMAlertEndpointRest");
+const { DCMRegexRule } = require("./models/DCMRegexRule");
+const { IDMRule } = require("./models/IDMRule");
+const { InterceptFile } = require("./models/InterceptFile");
+const { Database } = require("./models/Database");
+const { DBScan } = require("./models/DBScan");
+const { DCMAlertDBRest } = require("./models/DCMAlerDBRest");
 
-
-let connect = function () {
+let connect = function() {
     console.log("connecting to database");
     let promise = mongoose.connect("mongodb://127.0.0.1:27017/CyberGuard_Database", {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
     });
-    mongoose.connection.once("once", function () {
+    mongoose.connection.once("once", function() {
         console.log("Connected To Mongoose");
     });
-    mongoose.connection.on("error", function () {
+    mongoose.connection.on("error", function() {
         console.log("Error On Connecting With Mongoose");
     });
     return promise;
@@ -43,7 +45,7 @@ let mode = args[2];
 
 console.log(mode);
 
-connect().then(async function () {
+connect().then(async function() {
 
     if (mode === "delete_all") {
 
@@ -82,6 +84,12 @@ connect().then(async function () {
         console.log(14);
         await InterceptFile.remove({});
         console.log(15);
+        await Database.remove({});
+        console.log(16);
+        await DBScan.remove({});
+        console.log(17);
+        await DCMAlertDBRest.remove({});
+        console.log(18);
         return "done";
     } else if (mode === "delete_alerts") {
         await Alert.remove({});
@@ -100,6 +108,10 @@ connect().then(async function () {
         console.log(7);
         await RequestDetails.remove({});
         console.log(8);
+        await DBScan.remove({});
+        console.log(9);
+        await DCMAlertDBRest.remove({});
+        console.log(10);
     }
 
 });
